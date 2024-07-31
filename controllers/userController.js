@@ -2,7 +2,8 @@ const asyncHandler = require("express-async-handler");
 
 const User = require("../src/models/userModels");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { ValidationErrorItemOrigin } = require("sequelize");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -34,7 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("user is not valid");
   }
-  res.status(200).json(user);
+//   res.status(200).json(user);
 });
 
 
@@ -55,14 +56,21 @@ const user = await User.findOne({email})
 if(user && (bcrypt.compare(password, user.password))){
     const accessToken = jwt.sign({
         user:{
-            username
+            username: user.username,
+            email:user.email,
+            id:user.id
         }
-    })
+    }, 
+    process.env.ACCESSTOKEN,
+        {expiresIn:"1m"})
      res.status(200).json({accessToken})
+}else{
+    res.status(401)
+    throw new Error("Email or pasword is not valid")
 }
 
 
-  res.json({ message: "login user " });
+ 
 });
 
 
