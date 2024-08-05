@@ -35,7 +35,6 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("user is not valid");
   }
-//   res.status(200).json(user);
 });
 
 
@@ -61,7 +60,7 @@ if(user && (bcrypt.compare(password, user.password))){
             id:user.id
         }
     }, 
-    process.env.ACCESSTOKEN,
+    process.env.ACCESSTOKEN, 
         {expiresIn:"1m"})
      res.status(200).json({accessToken})
 }else{
@@ -69,13 +68,12 @@ if(user && (bcrypt.compare(password, user.password))){
     throw new Error("Email or pasword is not valid")
 }
 
-
  
 });
 
 
 const currentUser = asyncHandler(async (req, res) => {
-  res.json({ message: "current user info" });
+  res.json(req.user);
 });
 module.exports = { registerUser, loginUser, currentUser };
 
