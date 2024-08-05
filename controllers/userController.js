@@ -74,13 +74,8 @@ if(user && (bcrypt.compare(password, user.password))){
 });
 
 
-
-
-
-
-
-
 const currentUser = asyncHandler(async (req, res) => {
   res.json({ message: "current user info" });
 });
 module.exports = { registerUser, loginUser, currentUser };
+
