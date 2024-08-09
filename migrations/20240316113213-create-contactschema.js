@@ -2,6 +2,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('contacts', {
+      
       id: {
         allowNull: false,
         autoIncrement: true,
